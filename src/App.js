@@ -12,11 +12,9 @@ import {
 import zhCN from 'rsuite/lib/IntlProvider/locales/zh_CN';
 import Culinarian from './recipes/Culinarian.json';
 
-var run = undefined;
+var CraftsAI = undefined;
 import('bp_solver_wasm').then(module => {
-  run = module.run;
-  // let result = module.run(76, 1069, 981, 357, false, 290, 70, 2214, 32860, 60);
-  // console.log(result);
+  CraftsAI = module.CraftsAI;
 })
 
 const headerStyles = {
@@ -185,8 +183,7 @@ const PageMain = () => {
           <Col>
             <CraftStatus />
             <Button color="green" onClick={() => {
-              console.log("start", attributes, recipe);
-              let result = run(
+              let craft_ai = new CraftsAI(
                 attributes.level,
                 attributes.craftsmanship,
                 attributes.craft,
@@ -196,39 +193,40 @@ const PageMain = () => {
                 recipe.recipe_player_level,
                 recipe.progress,
                 recipe.quality,
-                recipe.durability
+                recipe.durability,
               );
-              console.log(result);
-              Alert.success('解：' + result, 0)
+              console.log("start", attributes, recipe);
+              // craft_ai.init()
+              // Alert.success('解：' + result, 0)
             }}>开始求解！
             </Button>
-            <p> 
-              Q1: 这是什么？<br/>
-              A1: ff14生产求解器<br/>
-              <br/>
-              Q2: 怎么用？<br/>
-              A2: 先输入玩家属性，再选择配方，最后点击“开始求解！”<br/>
-              <br/>
-              Q3: 为什么浏览器卡住了？<br/>
-              A3: 因为没有把运算放到后台线程去做，所以把界面卡住了。如果浏览器显示“页面未响应”，请选择“等待”<br/>
-              <br/>
-              Q4: 要卡多久？<br/>
-              A4: 大概两分钟，求得的解可以复制并导入<a href="http://ffxiv.tk/crafter/#/simulator">生产模拟器</a><br/>
-              <br/>
-              Q5: 为什么不把运算放到后台？<br/>
-              A5: 我不会写前端（绝对不是因为懒，嗯）<br/>
-              <br/>
-              Q6: 上面那几个进度条一样的东西是干啥的？<br/>
-              A6: 没用，好看的。<br/>
-              <br/>
-              Q7: 这个求解器有什么特点？<br/>
-              A7: 
-              - 优点：能在可接受的时间内求出 <b>最 优 解</b><br/>
-              - 缺点：慢（还没有进度提示）<br/>
-              - 缺点2：还没写完，所以只支持闲静起手<br/>
-              <br/>
-              Q8: 你这界面真丑 &amp;&amp; (我有改进意见 || 我可以帮忙做前端 || 我想把它整合进自己的模拟器)<br/>
-              A8: 点左边那个青色的按钮，可以联系到我。<br/>
+            <p>
+              Q1: 这是什么？<br />
+              A1: ff14生产求解器<br />
+              <br />
+              Q2: 怎么用？<br />
+              A2: 先输入玩家属性，再选择配方，最后点击“开始求解！”<br />
+              <br />
+              Q3: 为什么浏览器卡住了？<br />
+              A3: 因为没有把运算放到后台线程去做，所以把界面卡住了。如果浏览器显示“页面未响应”，请选择“等待”<br />
+              <br />
+              Q4: 要卡多久？<br />
+              A4: 大概两分钟，求得的解可以复制并导入<a href="http://ffxiv.tk/crafter/#/simulator">生产模拟器</a><br />
+              <br />
+              Q5: 为什么不把运算放到后台？<br />
+              A5: 我不会写前端（绝对不是因为懒，嗯）<br />
+              <br />
+              Q6: 上面那几个进度条一样的东西是干啥的？<br />
+              A6: 没用，好看的。<br />
+              <br />
+              Q7: 这个求解器有什么特点？<br />
+              A7:
+              - 优点：能在可接受的时间内求出 <b>最 优 解</b><br />
+              - 缺点：慢（还没有进度提示）<br />
+              - 缺点2：还没写完，所以只支持闲静起手<br />
+              <br />
+              Q8: 你这界面真丑 &amp;&amp; (我有改进意见 || 我可以帮忙做前端 || 我想把它整合进自己的模拟器)<br />
+              A8: 点左边那个青色的按钮，可以联系到我。<br />
             </p>
           </Col>
         </Row>
