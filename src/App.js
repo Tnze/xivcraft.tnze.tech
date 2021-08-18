@@ -13,7 +13,6 @@ class App extends Component {
     };
 
     onChange = current => {
-        console.log('onChange:', current);
         this.setState({current});
     };
 

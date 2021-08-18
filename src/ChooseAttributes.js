@@ -22,10 +22,6 @@ const data = [
     },
 ];
 
-function onChange(value, selectedOptions) {
-    console.log(value, selectedOptions);
-}
-
 function filter(inputValue, path) {
     return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
 }
