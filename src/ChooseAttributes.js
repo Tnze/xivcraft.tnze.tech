@@ -26,28 +26,32 @@ function filter(inputValue, path) {
     return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
 }
 
-export const AttrSelector = () => {
-    const [level, setLevel] = useState('80');
-    const [craftsmanship, setCraftsmanship] = useState('2830');
-    const [control, setControl] = useState('2710');
-    const [craftPoint, setCraftPoint] = useState('636');
-
+export const AttrSelector = (props) => {
     const [recipe, setRecipe] = useState(['custom']);
-    const [baseLevel, setBaseLevel] = useState('80');
-    const [rlv, setRlv] = useState('510');
-    const [prog, setProg] = useState('8591');
-    const [qual, setQual] = useState('56662');
     const onRecipeChange = (x) => {
         setRecipe(x)
         if (x[0] !== "custom") {
             let recipe = Culinarian.find(e => e.recipeId === x[1]);
-            setRlv(recipe.level);
-            setBaseLevel(recipe.baseLevel);
-            setProg(recipe.difficulty);
-            setQual(recipe.maxQuality);
-            console.log(x, recipe)
+            props.onChangeRecipe({
+                recipeLevel: recipe.level,
+                baseLevel: recipe.baseLevel,
+                progress: recipe.difficulty,
+                quality: recipe.maxQuality,
+                durability: recipe.durability,
+            })
         }
     }
+
+    const onChangeLevel = v => props.onChangeAttributes({level: v})
+    const onChangeCraftsmanship = v => props.onChangeAttributes({craftsmanship: v})
+    const onChangeControl = v => props.onChangeAttributes({control: v})
+    const onChangeCraftPoint = v => props.onChangeAttributes({craftPoint: v})
+
+    const onChangeRLV = v => props.onChangeRecipe({recipeLevel: v});
+    const onChangeBLV = v => props.onChangeRecipe({baseLevel: v});
+    const onChangeProgress = v => props.onChangeRecipe({progress: v});
+    const onChangeQuality = v => props.onChangeRecipe({quality: v});
+    const onChangeDurability = v => props.onChangeRecipe({durability: v});
 
     return (
         <Row gutter={[16, 16]}>
@@ -58,16 +62,16 @@ export const AttrSelector = () => {
                     layout="horizontal"
                 >
                     <Form.Item label="等级">
-                        <InputNumber min={1} max={80} value={level} onChange={setLevel}/>
+                        <InputNumber min={1} max={80} value={props.attr.level} onChange={onChangeLevel}/>
                     </Form.Item>
                     <Form.Item label="作业精度">
-                        <InputNumber min={1} value={craftsmanship} onChange={setCraftsmanship}/>
+                        <InputNumber min={1} value={props.attr.craftsmanship} onChange={onChangeCraftsmanship}/>
                     </Form.Item>
                     <Form.Item label="加工精度">
-                        <InputNumber min={1} value={control} onChange={setControl}/>
+                        <InputNumber min={1} value={props.attr.control} onChange={onChangeControl}/>
                     </Form.Item>
                     <Form.Item label="制作力">
-                        <InputNumber min={1} value={craftPoint} onChange={setCraftPoint}/>
+                        <InputNumber min={1} value={props.attr.craftPoint} onChange={onChangeCraftPoint}/>
                     </Form.Item>
                 </Form>
             </Col>
@@ -87,16 +91,19 @@ export const AttrSelector = () => {
                         />
                     </Form.Item>
                     <Form.Item label={"配方品级"}>
-                        <InputNumber value={rlv} onChange={setRlv} disabled={recipe[0] !== 'custom'}/>
+                        <InputNumber value={props.recipe.recipeLevel} onChange={onChangeRLV} disabled={recipe[0] !== 'custom'}/>
                     </Form.Item>
                     <Form.Item label={"最大进展"}>
-                        <InputNumber value={prog} onChange={setProg} disabled={recipe[0] !== 'custom'}/>
+                        <InputNumber value={props.recipe.progress} onChange={onChangeProgress} disabled={recipe[0] !== 'custom'}/>
                     </Form.Item>
                     <Form.Item label={"最高品质"}>
-                        <InputNumber value={qual} onChange={setQual} disabled={recipe[0] !== 'custom'}/>
+                        <InputNumber value={props.recipe.quality} onChange={onChangeQuality} disabled={recipe[0] !== 'custom'}/>
                     </Form.Item>
                     <Form.Item label={"基础等级"}>
-                        <InputNumber value={baseLevel} onChange={setBaseLevel} disabled={recipe[0] !== 'custom'}/>
+                        <InputNumber value={props.recipe.baseLevel} onChange={onChangeBLV} disabled={recipe[0] !== 'custom'}/>
+                    </Form.Item>
+                    <Form.Item label={"配方耐久"}>
+                        <InputNumber value={props.recipe.durability} onChange={onChangeDurability} disabled={recipe[0] !== 'custom'}/>
                     </Form.Item>
                 </Form>
             </Col>

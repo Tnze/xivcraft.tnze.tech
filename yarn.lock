@@ -3478,7 +3478,7 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-"bp_solver_wasm@file:./src/bp_solver":
+"bp_solver_wasm@file:./src/bp_solver_wasm":
   version "0.1.0"
 
 brace-expansion@^1.1.7:

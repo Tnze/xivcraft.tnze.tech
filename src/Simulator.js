@@ -1,7 +1,7 @@
 const {useState} = require("react");
 const {Row, Col, Progress} = require("antd");
 const {List, arrayMove} = require('react-movable');
-const {Line} = require('@ant-design/charts');
+const {DualAxes} = require('@ant-design/charts');
 const {SkillIcon} = require("./SkillIcon");
 
 const skills_name_translate = {
@@ -36,55 +36,97 @@ const skills_name_translate = {
     "trained_eye": "工匠的神速技巧",
 }
 
-export const Simulator = () => {
-    const data = [
-        {
-            skill: '制作',
-            key: 'du',
-            value: 106,
-        },
-        {
-            skill: '掌握',
-            key: 'cp',
-            value: 110,
-        },
-        {
-            skill: '简约',
-            key: 'du',
-            value: 88,
-        },
-        {
-            skill: '比尔格的祝福',
-            key: 'cp',
-            value: 91,
-        },
-    ];
-    const config = {
-        data: data,
-        xField: 'skill',
-        yField: 'value',
-        legend: false,
-        seriesField: 'key',
-        stepType: 'hvh',
-    };
+export const Simulator = (props) => {
+    const [du, setDu] = useState(props.recipe.durability);
+    const [cp, setCp] = useState(props.attr.craftPoint);
+    const [pg, setPg] = useState(0);
+    const [qu, setQu] = useState(0);
+    const [simulateResult, setSimulateResult] = useState([])
     const [items, setItems] = useState(
-        ['reflect', 'basic_synth', 'masters_mend']
+        [
+            'reflect', 'manipulation', 'veneration', 'waste_not_ii',
+            'groundwork', 'groundwork', 'groundwork', 'innovation',
+            'preparatory_touch', 'preparatory_touch', 'preparatory_touch',
+            'preparatory_touch', 'great_strides', 'innovation',
+            'prudent_touch', 'great_strides', 'byregot_s_blessing',
+            'veneration', 'observe', 'focused_synth', 'basic_synth',
+        ]
     );
+    const bp_solver_wasm = import("bp_solver_wasm")
+    let simulate = _skills => console.log("not ready");
+    bp_solver_wasm.then(m => {
+        simulate = skills => {
+            let s = new m.JsStatus(
+                props.attr.level,
+                props.attr.craftsmanship,
+                props.attr.control,
+                props.attr.craftPoint,
+                false,
+                props.recipe.recipeLevel,
+                props.recipe.baseLevel,
+                props.recipe.progress,
+                props.recipe.quality,
+                props.recipe.durability,
+            );
+            try {
+                let i = 0;
+                let result = skills.map(sk => {
+                    let r = s.cast_skills(sk);
+                    if (r) console.log(sk, r);
+                    return {
+                        skill: `[${i++}] ${skills_name_translate[sk]}`,
+                        durability: s.du(),
+                        craftPoint: s.cp(),
+                        progress: s.pg(),
+                        quality: s.qu(),
+                    }
+                });
+                setSimulateResult(result);
+                console.log(result)
+                setDu(s.du());
+                setCp(s.cp());
+                setPg(s.pg());
+                setQu(s.qu());
+            } catch (e) {
+                console.log(e);
+            } finally {
+                s.free();
+            }
+        };
+    }).catch(console.error);
+    const config = {
+        data: [simulateResult, simulateResult],
+        xField: 'skill',
+        yField: ['craftPoint', 'durability'],
+        geometryOptions: [
+            {
+                geometry: 'line',
+                color: '#29cae4',
+                stepType: 'vh',
+            },
+            {
+                geometry: 'line',
+                color: '#586bce',
+                stepType: 'vh',
+            },
+        ],
+    };
     return (
         <Row gutter={[16, 16]}>
             <Col span={6}>
                 <List
                     values={items}
-                    onChange={({oldIndex, newIndex}) =>
-                        setItems(arrayMove(items, oldIndex, newIndex))
-                    }
+                    onChange={({oldIndex, newIndex}) => {
+                        setItems(arrayMove(items, oldIndex, newIndex));
+                        simulate(items);
+                    }}
                     renderList={({children, props, isDragged}) => (
                         <ul
                             {...props}
                             style={{
                                 padding: '1em',
                                 cursor: isDragged ? 'grabbing' : undefined,
-                                height: '100%',
+                                height: '450px',
                                 overflowY: 'scroll',
                                 overflowX: 'hidden',
                             }}
@@ -121,12 +163,25 @@ export const Simulator = () => {
             </Col>
             <Col span={6}>
                 <Row>
-                    <Col flex={1}><Progress type="circle" percent={100} width={80}/></Col>
-                    <Col flex={1}><Progress type="circle" percent={75} width={80}/></Col>
+                    <Col flex={1}><Progress
+                        type="circle"
+                        percent={pg / props.recipe.progress * 100}
+                        format={_percent => `${pg}`}
+                        width={80}
+                    /></Col>
+                    <Col flex={1}><Progress
+                        type="circle"
+                        percent={qu / props.recipe.quality * 100}
+                        format={_percent => `${qu}`}
+                        width={80}
+                    /></Col>
                 </Row>
                 <br/>
                 <Row>
-                    <Col flex={2}><Progress percent={50} steps={7}/></Col>
+                    <Col flex={2}><Progress
+                        percent={du / props.recipe.durability * 100} steps={7}
+                        format={_percent => `${du} Du`}
+                    /></Col>
                 </Row>
                 <br/>
                 <Row>
@@ -135,12 +190,13 @@ export const Simulator = () => {
                             '0%': '#108ee9',
                             '100%': '#87d068',
                         }}
-                        percent={99.9}
+                        percent={cp / props.attr.craftPoint * 100}
+                        format={_percent => `${cp} CP`}
                     /></Col>
                 </Row>
             </Col>
             <Col span={12}>
-                <Line {...config} />
+                <DualAxes {...config} />
             </Col>
         </Row>
     );
