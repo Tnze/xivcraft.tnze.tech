@@ -336,7 +336,7 @@ export class Simulator extends Component {
                         </DragDropContext>
                     </Col>
                 </Row>
-                <Row gutter={[16, 16]}>
+                <Row style={{margin: 0, padding: '8px'}} gutter={[16, 16]}>
                     {this.state.exItems.map((item, i) =>
                         <Col style={{margin: 0, padding: 0}} key={`[${i}] ${item}`} flex={'48px'}>
                             <SkillIcon skill={item}/>
