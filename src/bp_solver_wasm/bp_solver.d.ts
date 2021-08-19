@@ -14,9 +14,9 @@ export class CraftsAI {
   init(report: Function): void;
 /**
 * @param {JsStatus} s
-* @returns {string}
+* @returns {any}
 */
-  resolve(s: JsStatus): string;
+  resolve(s: JsStatus): any;
 }
 /**
 */
