@@ -1,0 +1,13 @@
+{
+  "name": "bp_solver_wasm",
+  "version": "0.1.0",
+  "files": [
+    "bp_solver_bg.wasm",
+    "bp_solver.js",
+    "bp_solver_bg.js",
+    "bp_solver.d.ts"
+  ],
+  "module": "bp_solver.js",
+  "types": "bp_solver.d.ts",
+  "sideEffects": false
+}
