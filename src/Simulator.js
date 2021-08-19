@@ -1,6 +1,6 @@
 const {useState} = require("react");
-const {Row, Col, Progress} = require("antd");
-const {List, arrayMove} = require('react-movable');
+const {Row, Col, Progress, Card} = require("antd");
+const {DragDropContext, Droppable, Draggable} = require('react-beautiful-dnd');
 const {DualAxes} = require('@ant-design/charts');
 const {SkillIcon} = require("./SkillIcon");
 
@@ -41,17 +41,35 @@ export const Simulator = (props) => {
     const [cp, setCp] = useState(props.attr.craftPoint);
     const [pg, setPg] = useState(0);
     const [qu, setQu] = useState(0);
-    const [simulateResult, setSimulateResult] = useState([])
-    const [items, setItems] = useState(
-        [
-            'reflect', 'manipulation', 'veneration', 'waste_not_ii',
-            'groundwork', 'groundwork', 'groundwork', 'innovation',
-            'preparatory_touch', 'preparatory_touch', 'preparatory_touch',
-            'preparatory_touch', 'great_strides', 'innovation',
-            'prudent_touch', 'great_strides', 'byregot_s_blessing',
-            'veneration', 'observe', 'focused_synth', 'basic_synth',
-        ]
-    );
+    const [simulateResult, setSimulateResult] = useState([[], []])
+    const [items, setItems] = useState([]);
+
+    // a little function to help us with reordering the result
+    const reorder = (list, startIndex, endIndex) => {
+        const result = Array.from(list);
+        const [removed] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, removed);
+
+        return result;
+    };
+    const grid = 8;
+    const getItemStyle = (isDragging, draggableStyle) => ({
+        // some basic styles to make the items look a bit nicer
+        userSelect: 'none',
+
+        // change background colour if dragging
+        background: 'transparent',
+
+        // styles we need to apply on draggables
+        ...draggableStyle,
+    });
+
+    const getListStyle = isDraggingOver => ({
+        background: 'transparent',
+        display: 'flex',
+        padding: grid,
+        overflow: 'auto',
+    });
     const bp_solver_wasm = import("bp_solver_wasm")
     let simulate = _skills => console.log("not ready");
     bp_solver_wasm.then(m => {
@@ -69,20 +87,38 @@ export const Simulator = (props) => {
                 props.recipe.durability,
             );
             try {
-                let i = 0;
-                let result = skills.map(sk => {
-                    let r = s.cast_skills(sk);
-                    if (r) console.log(sk, r);
-                    return {
-                        skill: `[${i++}] ${skills_name_translate[sk]}`,
-                        durability: s.du(),
-                        craftPoint: s.cp(),
-                        progress: s.pg(),
-                        quality: s.qu(),
-                    }
-                });
-                setSimulateResult(result);
-                console.log(result)
+                let resources = [];
+                let incomes = [];
+                let record = (sk, s) => {
+                    resources.push({
+                        skill: sk,
+                        value: s.du(),
+                        key: 'durability'
+                    })
+                    resources.push({
+                        skill: sk,
+                        value: s.cp(),
+                        key: 'craft_points'
+                    })
+                    incomes.push({
+                        skill: sk,
+                        value: s.pg(),
+                        key: 'progress'
+                    })
+                    incomes.push({
+                        skill: sk,
+                        value: s.qu(),
+                        key: 'quality'
+                    })
+                };
+                record('[0] 初始状态', s);
+                for (let i in skills) {
+                    let r = s.cast_skills(skills[i]);
+                    if (r) console.log(skills[i], r);
+                    record(`[${Number(i) + 1}] ${skills_name_translate[skills[i]]}`, s);
+                }
+                setSimulateResult([resources, incomes]);
+                console.log([resources, incomes])
                 setDu(s.du());
                 setCp(s.cp());
                 setPg(s.pg());
@@ -95,109 +131,225 @@ export const Simulator = (props) => {
         };
     }).catch(console.error);
     const config = {
-        data: [simulateResult, simulateResult],
+        data: simulateResult,
         xField: 'skill',
-        yField: ['craftPoint', 'durability'],
+        yField: ['value', 'value'],
         geometryOptions: [
             {
-                geometry: 'line',
-                color: '#29cae4',
-                stepType: 'vh',
+                geometry: 'column',
+                isStack: true,
+                seriesField: 'key'
             },
             {
                 geometry: 'line',
-                color: '#586bce',
-                stepType: 'vh',
+                seriesField: 'key',
+                stepType: 'hvh',
             },
         ],
+        xAxis: {
+            label: {
+                autoRotate: true,
+                autoHide: false,
+                autoEllipsis: false,
+            },
+        },
+        annotations: {
+            value: [
+                {
+                    type: 'line',
+                    top: true,
+                    start: ['min', props.recipe.progress],
+                    end: ['max', props.recipe.progress],
+                    style: {
+                        lineWidth: 1,
+                        lineDash: [3, 3],
+                    },
+                    text: {
+                        content: `完成进展阈值(${props.recipe.progress})`,
+                        position: 'end',
+                        style: {textAlign: 'end'},
+                    },
+                },
+                {
+                    type: 'line',
+                    top: true,
+                    start: ['min', props.recipe.quality],
+                    end: ['max', props.recipe.quality],
+                    style: {
+                        lineWidth: 1,
+                        lineDash: [3, 3],
+                    },
+                    text: {
+                        content: `最高品质(${props.recipe.quality})`,
+                        position: 'end',
+                        style: {textAlign: 'end'},
+                    },
+                },
+            ],
+        }
     };
-    return (
-        <Row gutter={[16, 16]}>
-            <Col span={6}>
-                <List
-                    values={items}
-                    onChange={({oldIndex, newIndex}) => {
-                        setItems(arrayMove(items, oldIndex, newIndex));
-                        simulate(items);
-                    }}
-                    renderList={({children, props, isDragged}) => (
-                        <ul
-                            {...props}
-                            style={{
-                                padding: '1em',
-                                cursor: isDragged ? 'grabbing' : undefined,
-                                height: '450px',
-                                overflowY: 'scroll',
-                                overflowX: 'hidden',
-                            }}
-                        >
-                            {children}
-                        </ul>
-                    )}
-                    renderItem={({value, props, isDragged, isSelected}) => (
-                        <li
-                            {...props}
-                            style={{
-                                ...props.style,
-                                listStyleType: 'none',
-                                cursor: isDragged ? 'grabbing' : 'grab',
-                                color: '#333',
-                                borderRadius: '5px',
-                                fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
-                                backgroundColor: isDragged || isSelected ? 'transparent' : 'transparent'
-                            }}
-                        >
-                            <SkillIcon skill={value}/>
-                            <span
-                                style={{
-                                    display: 'inline-block',
-                                    height: '48px',
-                                    lineHeight: '48px',
-                                    textAlign: 'left',
-                                    verticalAlign: 'middle',
-                                }}
-                            >{skills_name_translate[value]}</span>
-                        </li>
-                    )}
-                />
-            </Col>
-            <Col span={6}>
-                <Row>
-                    <Col flex={1}><Progress
-                        type="circle"
-                        percent={pg / props.recipe.progress * 100}
-                        format={_percent => `${pg}`}
-                        width={80}
-                    /></Col>
-                    <Col flex={1}><Progress
-                        type="circle"
-                        percent={qu / props.recipe.quality * 100}
-                        format={_percent => `${qu}`}
-                        width={80}
-                    /></Col>
-                </Row>
-                <br/>
-                <Row>
-                    <Col flex={2}><Progress
-                        percent={du / props.recipe.durability * 100} steps={7}
-                        format={_percent => `${du} Du`}
-                    /></Col>
-                </Row>
-                <br/>
-                <Row>
-                    <Col flex={22}><Progress
-                        strokeColor={{
-                            '0%': '#108ee9',
-                            '100%': '#87d068',
+    const onDragEnd = result => {
+        let newItems = items;
+        // dropped outside the list
+        if (!result.destination) {
+            let r = Array.from(items);
+            r.splice(result.source.index, 1);
+            newItems = r;
+        } else {
+            newItems = reorder(
+                items,
+                result.source.index,
+                result.destination.index
+            );
+        }
+        setItems(newItems)
+        simulate(newItems)
+    };
+    const appendSkill = sk => {
+        let result = Array.from(items);
+        result.push(sk);
+        setItems(result);
+        simulate(result)
+    }
+    const skillsButtonList = list =>
+        <Row>
+            {list.map(sk =>
+                <Col flex={'48px'}>
+                    <button
+                        onClick={() => appendSkill(sk)}
+                        style={{
+                            margin: 0,
+                            padding: 0,
+                            outline: 'none',
+                            border: 'none',
                         }}
-                        percent={cp / props.attr.craftPoint * 100}
-                        format={_percent => `${cp} CP`}
-                    /></Col>
-                </Row>
-            </Col>
-            <Col span={12}>
-                <DualAxes {...config} />
-            </Col>
+                    >
+                        <SkillIcon skill={sk}/>
+                    </button>
+                </Col>
+            )}
         </Row>
+    const [currentTab, setCurrentTab] = useState('s1')
+    const tabList = [
+        {
+            key: 's1',
+            tab: '起手技能',
+        },
+        {
+            key: 's2',
+            tab: '制作技能',
+        },
+        {
+            key: 's3',
+            tab: '加工技能',
+        },
+        {
+            key: 's4',
+            tab: 'Buff技能',
+        }
+    ]
+    const skillList = {
+        's1': skillsButtonList(['muscle_memory', 'reflect', 'trained_eye']),
+        's2': skillsButtonList([
+            'basic_synth', 'brand_of_the_elements', 'careful_synth',
+            'focused_synth', 'groundwork', 'intensive_synth', 'delicate_synth',
+        ]),
+        's3': skillsButtonList([
+            'basic_touch', 'standard_touch', 'byregot_s_blessing',
+            'precise_touch', 'prudent_touch', 'focused_touch', 'preparatory_touch',
+        ]),
+        's4': skillsButtonList([
+            'masters_mend', 'waste_not', 'waste_not_ii', 'manipulation',
+            'inner_quiet', 'veneration', 'innovation', 'great_strides',
+            'name_of_the_elements', 'observe', 'final_appraisal',
+        ]),
+    }
+    return (
+        <div>
+            <Row gutter={[16, 16]}>
+                <Col span={24}>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable droppableId="droppable" direction="horizontal">
+                            {(provided, snapshot) => (
+                                <div
+                                    ref={provided.innerRef}
+                                    style={getListStyle(snapshot.isDraggingOver)}
+                                    {...provided.droppableProps}
+                                >
+                                    {items.map((item, index) => (
+                                        <Draggable key={`[${index}]${item}`} draggableId={`[${index}]${item}`}
+                                                   index={index}>
+                                            {(provided, snapshot) => (
+                                                <div
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    style={getItemStyle(
+                                                        snapshot.isDragging,
+                                                        provided.draggableProps.style
+                                                    )}
+                                                >
+                                                    <SkillIcon skill={item}/>
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                </Col>
+            </Row>
+            <Row style={{marginTop: '30px'}} gutter={[16, 16]}>
+                <Col span={8}>
+                    <Row>
+                        <Col flex={1}><Progress
+                            type="circle"
+                            percent={pg / props.recipe.progress * 100}
+                            format={_percent => `${pg}`}
+                            width={80}
+                        /></Col>
+                        <Col flex={1}><Progress
+                            type="circle"
+                            percent={qu / props.recipe.quality * 100}
+                            format={_percent => `${qu}`}
+                            width={80}
+                        /></Col>
+                    </Row>
+                    <br/>
+                    <Row>
+                        <Col flex={2}><Progress
+                            percent={du / props.recipe.durability * 100} steps={7}
+                            format={_percent => `${du} Du`}
+                        /></Col>
+                    </Row>
+                    <br/>
+                    <Row>
+                        <Col flex={22}><Progress
+                            strokeColor={{
+                                '0%': '#108ee9',
+                                '100%': '#87d068',
+                            }}
+                            percent={cp / props.attr.craftPoint * 100}
+                            format={_percent => `${cp} CP`}
+                        /></Col>
+                    </Row>
+                    <Row>
+                        <Card
+                            style={{width: '100%'}}
+                            tabList={tabList}
+                            activeTabKey={currentTab}
+                            onTabChange={setCurrentTab}
+                        >
+                            {skillList[currentTab]}
+                        </Card>
+                    </Row>
+                </Col>
+                <Col span={16}>
+                    <DualAxes {...config} />
+                </Col>
+            </Row>
+        </div>
     );
 }

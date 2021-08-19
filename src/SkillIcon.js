@@ -1,12 +1,14 @@
 import IconCover from "./skill_icons/icon_cover_40.png"
+
 const requireContext = require.context("./skill_icons", true, /^\.\/.*\.png$/);
 
 export const SkillIcon = (props) => {
     return (
         <div style={{
-            display: 'inline',
+            display: 'block',
             width: '48px',
             height: '48px',
+            position: 'relative'
         }}>
             <img
                 style={{
@@ -16,7 +18,7 @@ export const SkillIcon = (props) => {
                     height: '40px',
                     position: 'absolute',
                 }}
-                src={requireContext(`./${props.skill}.png`).default}  alt={"inner_quiet"}
+                src={props.skill ? requireContext(`./${props.skill}.png`).default : null} alt={props.skill}
             />
             <div style={{
                 top: 0,
