@@ -1,5 +1,5 @@
 const {useState} = require("react");
-const {Row, Col, Progress, Card} = require("antd");
+const {Row, Col, Progress} = require("antd");
 const {DragDropContext, Droppable, Draggable} = require('react-beautiful-dnd');
 const {DualAxes} = require('@ant-design/charts');
 const {SkillIcon} = require("./SkillIcon");
@@ -188,22 +188,26 @@ export const Simulator = (props) => {
             ],
         }
     };
+    const onDelete = i => {
+        let newItems = Array.from(items);
+        newItems.splice(i, 1);
+        setItems(newItems)
+        simulate(newItems)
+    }
     const onDragEnd = result => {
         let newItems = items;
         // dropped outside the list
         if (!result.destination) {
-            let r = Array.from(items);
-            r.splice(result.source.index, 1);
-            newItems = r;
+            onDelete(result.source.index);
         } else {
             newItems = reorder(
                 items,
                 result.source.index,
                 result.destination.index
             );
+            setItems(newItems)
+            simulate(newItems)
         }
-        setItems(newItems)
-        simulate(newItems)
     };
     const appendSkill = sk => {
         let result = Array.from(items);
@@ -229,41 +233,6 @@ export const Simulator = (props) => {
                 </Col>
             )}
         </Row>
-    const [currentTab, setCurrentTab] = useState('s1')
-    const tabList = [
-        {
-            key: 's1',
-            tab: '起手技能',
-        },
-        {
-            key: 's2',
-            tab: '制作技能',
-        },
-        {
-            key: 's3',
-            tab: '加工技能',
-        },
-        {
-            key: 's4',
-            tab: 'Buff技能',
-        }
-    ]
-    const skillList = {
-        's1': skillsButtonList(['muscle_memory', 'reflect', 'trained_eye']),
-        's2': skillsButtonList([
-            'basic_synth', 'brand_of_the_elements', 'careful_synth',
-            'focused_synth', 'groundwork', 'intensive_synth', 'delicate_synth',
-        ]),
-        's3': skillsButtonList([
-            'basic_touch', 'standard_touch', 'byregot_s_blessing',
-            'precise_touch', 'prudent_touch', 'focused_touch', 'preparatory_touch',
-        ]),
-        's4': skillsButtonList([
-            'masters_mend', 'waste_not', 'waste_not_ii', 'manipulation',
-            'inner_quiet', 'veneration', 'innovation', 'great_strides',
-            'name_of_the_elements', 'observe', 'final_appraisal',
-        ]),
-    }
     return (
         <div>
             <Row gutter={[16, 16]}>
@@ -277,8 +246,11 @@ export const Simulator = (props) => {
                                     {...provided.droppableProps}
                                 >
                                     {items.map((item, index) => (
-                                        <Draggable key={`[${index}]${item}`} draggableId={`[${index}]${item}`}
-                                                   index={index}>
+                                        <Draggable
+                                            key={`[${index}]${item}`}
+                                            draggableId={`[${index}]${item}`}
+                                            index={index}
+                                        >
                                             {(provided, snapshot) => (
                                                 <div
                                                     ref={provided.innerRef}
@@ -288,6 +260,10 @@ export const Simulator = (props) => {
                                                         snapshot.isDragging,
                                                         provided.draggableProps.style
                                                     )}
+                                                    onContextMenu={(e) => {
+                                                        onDelete(index);
+                                                        e.preventDefault();
+                                                    }}
                                                 >
                                                     <SkillIcon skill={item}/>
                                                 </div>
@@ -336,14 +312,16 @@ export const Simulator = (props) => {
                         /></Col>
                     </Row>
                     <Row>
-                        <Card
-                            style={{width: '100%'}}
-                            tabList={tabList}
-                            activeTabKey={currentTab}
-                            onTabChange={setCurrentTab}
-                        >
-                            {skillList[currentTab]}
-                        </Card>
+                        {skillsButtonList([
+                            'muscle_memory', 'reflect', 'trained_eye',
+                            'basic_synth', 'brand_of_the_elements', 'careful_synth',
+                            'focused_synth', 'groundwork', 'intensive_synth', 'delicate_synth',
+                            'basic_touch', 'standard_touch', 'byregot_s_blessing',
+                            'precise_touch', 'prudent_touch', 'focused_touch', 'preparatory_touch',
+                            'masters_mend', 'waste_not', 'waste_not_ii', 'manipulation',
+                            'inner_quiet', 'veneration', 'innovation', 'great_strides',
+                            'name_of_the_elements', 'observe', 'final_appraisal',
+                        ])}
                     </Row>
                 </Col>
                 <Col span={16}>
