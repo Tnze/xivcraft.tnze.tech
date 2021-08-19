@@ -22,7 +22,8 @@ class App extends Component {
             progress: 8591,
             quality: 56662,
             durability: 70,
-        }
+        },
+        helperLoading: 0,
     };
 
     onChangePage = current =>
@@ -43,15 +44,26 @@ class App extends Component {
         const simulator = <Simulator
             attr={this.state.attributes}
             recipe={this.state.recipe}
+            setHelperStatus={p => this.setState({helperLoading: p})}
         />;
         return (
             <div className="App">
                 <Row gutter={[16, 16]}>
                     <Col span={16} offset={4}>
-                        <Steps current={currentPage} onChange={this.onChangePage}>
+                        <Steps
+                            current={currentPage}
+                            onChange={this.onChangePage}
+                            percent={this.state.currentPage === 1 ? this.state.helperLoading : undefined}
+                        >
                             <Step title="选择属性及配方" description="请输入您的装备属性，并选择需要制作的道具"/>
-                            <Step title="编排技能" description="通过点选及拖拽设计制作流程，并实时查看模拟结果"/>
-                            <Step title="导出宏" description="将您的技能导出为游戏宏方便一键使用"/>
+                            <Step title="编排技能"
+                                  subTitle={this.state.currentPage === 1 ? (
+                                      this.state.helperLoading === 100
+                                          ? "自动补全正在工作"
+                                          : `正在加载求解器: ${(this.state.helperLoading*100).toFixed(1)}%`
+                                  ) : undefined}
+                                  description="通过点选及拖拽设计制作流程，并实时查看模拟结果"/>
+                            <Step title="导出宏" subTitle="⚠️正在施工" description="将您的技能导出为游戏宏方便一键使用"/>
                         </Steps>
                     </Col>
                 </Row>

@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import Worker from "./AI.worker"
+
 const {useState} = require("react");
 const {Row, Col, Progress} = require("antd");
 const {DragDropContext, Droppable, Draggable} = require('react-beautiful-dnd');
@@ -197,9 +200,7 @@ export const Simulator = (props) => {
     const onDragEnd = result => {
         let newItems = items;
         // dropped outside the list
-        if (!result.destination) {
-            onDelete(result.source.index);
-        } else {
+        if (result.destination) {
             newItems = reorder(
                 items,
                 result.source.index,
@@ -215,10 +216,21 @@ export const Simulator = (props) => {
         setItems(result);
         simulate(result)
     }
+    const worker = new Worker();
+
+    worker.postMessage({action: 'init', attr: props.attr, recipe: props.recipe});
+    worker.onmessage = e => {
+        switch (e.data.action) {
+            case 'loading':
+                props.setHelperStatus(e.data.loading.progress);
+                break;
+            default:
+        }
+    }
     const skillsButtonList = list =>
         <Row>
-            {list.map(sk =>
-                <Col flex={'48px'}>
+            {list.map((sk, i) =>
+                <Col key={`[${i}] ${sk}`} flex={'48px'}>
                     <button
                         onClick={() => appendSkill(sk)}
                         style={{
