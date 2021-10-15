@@ -13,7 +13,7 @@ class App extends Component {
                 <br/>
                 链接2：<a href="https://bbs.nga.cn/read.php?tid=28846320">高难生产轮椅</a><br/>
                 <br/><br/>
-                <h>生产轮椅下载</h>
+                <b><i>生产轮椅下载</i></b><br/>
                 <br/>
                 v1.1.1.6 <a
                 href="https://www.aliyundrive.com/s/Chr8axjZAfb">https://www.aliyundrive.com/s/Chr8axjZAfb</a><br/>
@@ -24,12 +24,14 @@ class App extends Component {
                 <s>v1.1.1.3 <a
                     href="https://www.aliyundrive.com/s/YE5L2F3bwCK">https://www.aliyundrive.com/s/YE5L2F3bwCK</a></s><br/>
 
+                <br/>
                 <b><i>更新日志</i></b><br/>
 
-                v1.1.1.7 Coming Soon
+                v1.1.1.7 Not Coming 屎黄色论坛再见，帖子不让更是吧
                 <ul>
-                    <li>优化推荐技能优先级</li>
+                    <li>优化推荐技能</li>
                     <li>添加悬浮窗动画</li>
+                    <li>错误处理</li>
                 </ul>
                 v1.1.1.6
                 <ul>
