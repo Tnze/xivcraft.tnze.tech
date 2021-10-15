@@ -9,20 +9,23 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <a href="https://bbs.nga.cn/read.php?tid=28176186">桌面版生产模拟器 / 普通配方用求解器</a>
-                <a href="https://bbs.nga.cn/read.php?tid=28846320">高难生产轮椅</a>
-
+                链接1：<a href="https://bbs.nga.cn/read.php?tid=28176186">桌面版生产模拟器 / 普通配方用求解器</a><br/>
+                <br/>
+                链接2：<a href="https://bbs.nga.cn/read.php?tid=28846320">高难生产轮椅</a><br/>
+                <br/><br/>
                 <h>生产轮椅下载</h>
+                <br/>
                 v1.1.1.6 <a
-                href="https://www.aliyundrive.com/s/Chr8axjZAfb">https://www.aliyundrive.com/s/Chr8axjZAfb</a>
+                href="https://www.aliyundrive.com/s/Chr8axjZAfb">https://www.aliyundrive.com/s/Chr8axjZAfb</a><br/>
                 <s>v1.1.1.5 <a
-                    href="https://www.aliyundrive.com/s/ECjwCvT2UAu">https://www.aliyundrive.com/s/ECjwCvT2UAu</a></s>
+                    href="https://www.aliyundrive.com/s/ECjwCvT2UAu">https://www.aliyundrive.com/s/ECjwCvT2UAu</a></s><br/>
                 <s>v1.1.1.4 <a
-                    href="https://www.aliyundrive.com/s/JArYwywjx6v">https://www.aliyundrive.com/s/JArYwywjx6v</a></s>
+                    href="https://www.aliyundrive.com/s/JArYwywjx6v">https://www.aliyundrive.com/s/JArYwywjx6v</a></s><br/>
                 <s>v1.1.1.3 <a
-                    href="https://www.aliyundrive.com/s/YE5L2F3bwCK">https://www.aliyundrive.com/s/YE5L2F3bwCK</a></s>
+                    href="https://www.aliyundrive.com/s/YE5L2F3bwCK">https://www.aliyundrive.com/s/YE5L2F3bwCK</a></s><br/>
 
-                <b><i>更新日志</i></b>
+                <b><i>更新日志</i></b><br/>
+
                 v1.1.1.7 Coming Soon
                 <ul>
                     <li>优化推荐技能优先级</li>
