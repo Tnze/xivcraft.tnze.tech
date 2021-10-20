@@ -27,7 +27,13 @@ class App extends Component {
                 <br/>
                 <b><i>更新日志</i></b><br/>
 
-                v1.1.1.7 Coming soon
+                v1.1.1.8 Coming soon
+                <ul>
+                    <li>支持将加载的求解器保存至文件下次直接加载</li>
+                    <li>支持自动检查更新</li>
+                </ul>
+
+                v1.1.1.7 (内部版本)
                 <ul>
                     <li>优化推荐技能</li>
                     <li>添加悬浮窗动画</li>
