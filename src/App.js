@@ -10,6 +10,8 @@ class App extends Component {
         return (
             <div className="App">
                 帖子1：<a href="https://bbs.nga.cn/read.php?tid=28176186">桌面版生产模拟器 / 普通配方用求解器</a><br/>
+                <br/><br/>
+                生产模拟器网页版已封存，短期内不在提供服务。这是因为我比较懒。
                 <br/>
                 帖子2：<a href="https://bbs.nga.cn/read.php?tid=28846320">高难生产轮椅</a><br/>
                 <br/><br/>
@@ -26,6 +28,8 @@ class App extends Component {
 
                 <br/>
                 <b><i>更新日志</i></b><br/>
+                非常感谢正在浏览这个页面的屏幕前的你，的关注和支持。但是下一个插件更新将会在<b>大约两个月后</b>。这是因为我正在准备考研。
+                <br/>
 
                 v1.1.1.8 Coming soon
                 <ul>
