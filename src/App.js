@@ -17,8 +17,10 @@ class App extends Component {
                 <br/><br/>
                 <b><i>生产轮椅下载</i></b><br/>
                 <br/>
-                v1.1.1.6 <a
-                href="https://www.aliyundrive.com/s/Chr8axjZAfb">https://www.aliyundrive.com/s/Chr8axjZAfb</a><br/>
+                v1.1.1.9 <a
+                href="https://www.aliyundrive.com/s/4g52NVEfJX1">https://www.aliyundrive.com/s/4g52NVEfJX1</a><br/>
+                <s>v1.1.1.6 <a
+                href="https://www.aliyundrive.com/s/Chr8axjZAfb">https://www.aliyundrive.com/s/Chr8axjZAfb</a></s><br/>
                 <s>v1.1.1.5 <a
                     href="https://www.aliyundrive.com/s/ECjwCvT2UAu">https://www.aliyundrive.com/s/ECjwCvT2UAu</a></s><br/>
                 <s>v1.1.1.4 <a
@@ -28,14 +30,27 @@ class App extends Component {
 
                 <br/>
                 <b><i>更新日志</i></b><br/>
-                国服5.57正在准备适配中（）<br/>
+                国服5.57临时版 v1.1.1.9 已发布~<br/>
                 <br/>
                 非常感谢正在浏览这个页面的屏幕前的你，的关注和支持。但是接下类的更新可能比较慢（考研。<br/>
                 <br/>
-                v1.1.1.8 Coming soon
+                v1.1.1.10 Coming Soon
+                <ul>
+                    <li>自动读取装备属性以及制作力</li>
+                </ul>
+
+                v1.1.1.9
+                <ul>
+                    <li>将求解器保存指文件的功能处于实验阶段，并且非常缓慢，不建议使用（）</li>
+                    <li>多显示了一些数据</li>
+                    <li>自动检查更新【并没有做】</li>
+                    <li>抓包小工具（？）</li>
+                </ul>
+
+                v1.1.1.8 (内部版本)
                 <ul>
                     <li>支持将加载的求解器保存至文件下次直接加载</li>
-                    <li>支持自动检查更新</li>
+                    <li><s>支持自动检查更新</s>（并没有）</li>
                 </ul>
 
                 v1.1.1.7 (内部版本)
