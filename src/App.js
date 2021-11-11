@@ -17,10 +17,12 @@ class App extends Component {
                 <br/><br/>
                 <b><i>生产轮椅下载</i></b><br/>
                 <br/>
-                v1.1.1.9 <a
-                href="https://www.aliyundrive.com/s/4g52NVEfJX1">https://www.aliyundrive.com/s/4g52NVEfJX1</a><br/>
+                v1.1.1.10 <a
+                href="https://www.aliyundrive.com/s/SAXDjmjZ2us">https://www.aliyundrive.com/s/SAXDjmjZ2us</a><br/>
+                <s>v1.1.1.9 <a
+                href="https://www.aliyundrive.com/s/4g52NVEfJX1">https://www.aliyundrive.com/s/4g52NVEfJX1</a></s><br/>
                 <s>v1.1.1.6 <a
-                href="https://www.aliyundrive.com/s/Chr8axjZAfb">https://www.aliyundrive.com/s/Chr8axjZAfb</a></s><br/>
+                    href="https://www.aliyundrive.com/s/Chr8axjZAfb">https://www.aliyundrive.com/s/Chr8axjZAfb</a></s><br/>
                 <s>v1.1.1.5 <a
                     href="https://www.aliyundrive.com/s/ECjwCvT2UAu">https://www.aliyundrive.com/s/ECjwCvT2UAu</a></s><br/>
                 <s>v1.1.1.4 <a
@@ -34,12 +36,17 @@ class App extends Component {
                 <br/>
                 非常感谢正在浏览这个页面的屏幕前的你，的关注和支持。但是接下类的更新可能比较慢（考研。<br/>
                 <br/>
-                v1.1.1.10 Coming Soon
+                v1.1.1.11 Coming Soon
                 <ul>
                     <li>自动读取装备属性以及制作力</li>
                 </ul>
 
-                v1.1.1.9
+                v1.1.1.10
+                <ul>
+                    <li>修复无法正常加载的问题</li>
+                </ul>
+
+                v1.1.1.9（已删除，请更新v1.1.1.10）
                 <ul>
                     <li>将求解器保存指文件的功能处于实验阶段，并且非常缓慢，不建议使用（）</li>
                     <li>多显示了一些数据</li>
