@@ -17,10 +17,12 @@ class App extends Component {
                 <br/><br/>
                 <b><i>生产轮椅下载</i></b><br/>
                 <br/>
-                v1.1.1.10 <a
-                href="https://www.aliyundrive.com/s/SAXDjmjZ2us">https://www.aliyundrive.com/s/SAXDjmjZ2us</a><br/>
+                v1.1.1.11 <a
+                href="https://www.aliyundrive.com/s/8rSyLw33T9G">https://www.aliyundrive.com/s/8rSyLw33T9G</a><br/>
+                <s>v1.1.1.10 <a
+                    href="https://www.aliyundrive.com/s/SAXDjmjZ2us">https://www.aliyundrive.com/s/SAXDjmjZ2us</a></s><br/>
                 <s>v1.1.1.9 <a
-                href="https://www.aliyundrive.com/s/4g52NVEfJX1">https://www.aliyundrive.com/s/4g52NVEfJX1</a></s><br/>
+                    href="https://www.aliyundrive.com/s/4g52NVEfJX1">https://www.aliyundrive.com/s/4g52NVEfJX1</a></s><br/>
                 <s>v1.1.1.6 <a
                     href="https://www.aliyundrive.com/s/Chr8axjZAfb">https://www.aliyundrive.com/s/Chr8axjZAfb</a></s><br/>
                 <s>v1.1.1.5 <a
@@ -36,9 +38,9 @@ class App extends Component {
                 <br/>
                 非常感谢正在浏览这个页面的屏幕前的你，的关注和支持。但是接下类的更新可能比较慢（考研。<br/>
                 <br/>
-                v1.1.1.11 Coming Soon
+                v1.1.1.11
                 <ul>
-                    <li>自动读取装备属性以及制作力</li>
+                    <li>更新了版本号</li>
                 </ul>
 
                 v1.1.1.10
