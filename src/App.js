@@ -11,14 +11,15 @@ class App extends Component {
             <div className="App">
                 帖子1：<a href="https://bbs.nga.cn/read.php?tid=28176186">桌面版生产模拟器 / 普通配方用求解器</a><br/>
                 <br/>
-                生产模拟器网页版已封存，短期内不在提供服务（我懒。<br/>
+                生产模拟器网页版已封存，短期内不再提供服务（我懒。<br/>
                 <br/>
                 帖子2：<a href="https://bbs.nga.cn/read.php?tid=28846320">高难生产轮椅</a><br/>
                 <br/><br/>
                 <b><i>生产轮椅下载</i></b><br/>
                 <br/>
-                v1.1.1.11 <a
-                href="https://www.aliyundrive.com/s/8rSyLw33T9G">https://www.aliyundrive.com/s/8rSyLw33T9G</a><br/>
+                v1.1.1.12 <a href="https://www.aliyundrive.com/s/NQu4pPur3ym">https://www.aliyundrive.com/s/NQu4pPur3ym</a><br/>
+                <s>v1.1.1.11 <a
+                href="https://www.aliyundrive.com/s/8rSyLw33T9G">https://www.aliyundrive.com/s/8rSyLw33T9G</a></s><br/>
                 <s>v1.1.1.10 <a
                     href="https://www.aliyundrive.com/s/SAXDjmjZ2us">https://www.aliyundrive.com/s/SAXDjmjZ2us</a></s><br/>
                 <s>v1.1.1.9 <a
@@ -34,10 +35,14 @@ class App extends Component {
 
                 <br/>
                 <b><i>更新日志</i></b><br/>
-                国服5.57临时版 v1.1.1.9 已发布~<br/>
                 <br/>
-                非常感谢正在浏览这个页面的屏幕前的你，的关注和支持。但是接下类的更新可能比较慢（考研。<br/>
-                <br/>
+                v1.1.1.12 元旦特别版
+                <ul>
+                    <li>为悬浮窗添加了可爱的蓝色边框（？</li>
+                    <li>略微调整了技能的优先顺序</li>
+                    <li>大幅优化了插件的大小</li>
+                </ul>
+
                 v1.1.1.11
                 <ul>
                     <li>更新了版本号</li>
