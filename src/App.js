@@ -17,7 +17,10 @@ class App extends Component {
                 <br/><br/>
                 <b><i>生产轮椅下载</i></b><br/>
                 <br/>
-                v1.1.1.12 <a href="https://www.aliyundrive.com/s/NQu4pPur3ym">https://www.aliyundrive.com/s/NQu4pPur3ym</a><br/>
+
+                v1.1.1.13 <a href="https://www.aliyundrive.com/s/y6UmvXbNYq1">https://www.aliyundrive.com/s/y6UmvXbNYq1</a><br/>
+                <s>v1.1.1.12 <a
+                href="https://www.aliyundrive.com/s/NQu4pPur3ym">https://www.aliyundrive.com/s/NQu4pPur3ym</a></s><br/>
                 <s>v1.1.1.11 <a
                 href="https://www.aliyundrive.com/s/8rSyLw33T9G">https://www.aliyundrive.com/s/8rSyLw33T9G</a></s><br/>
                 <s>v1.1.1.10 <a
@@ -36,6 +39,11 @@ class App extends Component {
                 <br/>
                 <b><i>更新日志</i></b><br/>
                 <br/>
+                v1.1.1.13
+                <ul>
+                    <li>适配国服5.58</li>
+                </ul>
+
                 v1.1.1.12 元旦特别版
                 <ul>
                     <li>为悬浮窗添加了可爱的蓝色边框（？</li>
